@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 
 import '../services/database_service.dart';
 import '../widgets/widgets.dart';
+import 'auth/login_page.dart';
 import 'home_page.dart';
 
 class GroupInfo extends StatefulWidget {
   final String groupId;
   final String groupName;
   final String adminName;
+
   const GroupInfo(
       {Key? key,
-        required this.adminName,
-        required this.groupName,
-        required this.groupId})
+      required this.adminName,
+      required this.groupName,
+      required this.groupId})
       : super(key: key);
 
   @override
@@ -22,6 +24,7 @@ class GroupInfo extends StatefulWidget {
 
 class _GroupInfoState extends State<GroupInfo> {
   Stream? members;
+
   @override
   void initState() {
     getMembers();
@@ -64,11 +67,50 @@ class _GroupInfoState extends State<GroupInfo> {
                       return AlertDialog(
                         title: const Text("Exit"),
                         content:
-                        const Text("Are you sure you exit the group? "),
+                            const Text("Are you sure you exit the group? "),
                         actions: [
                           IconButton(
                             onPressed: () {
-                              Navigator.pop(context);
+                              showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text("Exit"),
+                                      content: const Text(
+                                          "Are you sure you want to exit?"),
+                                      actions: [
+                                        IconButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          icon: const Icon(
+                                            Icons.cancel,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: () async {
+                                            DatabaseService(
+                                                    uid: FirebaseAuth.instance
+                                                        .currentUser!.uid)
+                                                .toggleGroupJoin(
+                                                    widget.groupId,
+                                                    getName(widget.adminName),
+                                                    widget.groupName)
+                                                .whenComplete(() {
+                                              nextScreen(
+                                                  context, const HomePage());
+                                            });
+                                          },
+                                          icon: const Icon(
+                                            Icons.done,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  });
                             },
                             icon: const Icon(
                               Icons.cancel,
@@ -78,12 +120,12 @@ class _GroupInfoState extends State<GroupInfo> {
                           IconButton(
                             onPressed: () async {
                               DatabaseService(
-                                  uid: FirebaseAuth
-                                      .instance.currentUser!.uid)
+                                      uid: FirebaseAuth
+                                          .instance.currentUser!.uid)
                                   .toggleGroupJoin(
-                                  widget.groupId,
-                                  getName(widget.adminName),
-                                  widget.groupName)
+                                      widget.groupId,
+                                      getName(widget.adminName),
+                                      widget.groupName)
                                   .whenComplete(() {
                                 nextScreenReplace(context, const HomePage());
                               });
@@ -160,7 +202,7 @@ class _GroupInfoState extends State<GroupInfo> {
                 itemBuilder: (context, index) {
                   return Container(
                     padding:
-                    const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                     child: ListTile(
                       leading: CircleAvatar(
                         radius: 30,
@@ -194,8 +236,8 @@ class _GroupInfoState extends State<GroupInfo> {
         } else {
           return Center(
               child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor,
-              ));
+            color: Theme.of(context).primaryColor,
+          ));
         }
       },
     );
