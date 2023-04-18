@@ -23,6 +23,7 @@ class Assets {
   static const String servicesDatabaseService = 'lib/services/database_service.dart';
   static const String sharedConstants = 'lib/shared/constants.dart';
   static const String widgetsGroupTile = 'lib/widgets/group_tile.dart';
+  static const String widgetsMessageTile = 'lib/widgets/message_tile.dart';
   static const String widgetsWidgets = 'lib/widgets/widgets.dart';
 
 }

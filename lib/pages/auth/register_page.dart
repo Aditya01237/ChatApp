@@ -39,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   const Text(
-                    "Groupie",
+                    "HiveChat",
                     style: TextStyle(
                         fontSize: 40, fontWeight: FontWeight.bold),
                   ),
@@ -81,7 +81,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         )),
                     onChanged: (val) {
                       setState(() {
-                        email = val;
+                        email = val.trim();
                       });
                     },
 

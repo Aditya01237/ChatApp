@@ -2,13 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
   final String? uid;
+
   DatabaseService({this.uid});
 
   // reference for our collections
   final CollectionReference userCollection =
-  FirebaseFirestore.instance.collection("users");
+      FirebaseFirestore.instance.collection("users");
   final CollectionReference groupCollection =
-  FirebaseFirestore.instance.collection("groups");
+      FirebaseFirestore.instance.collection("groups");
 
   // saving the userdata
   Future savingUserData(String fullName, String email) async {
@@ -24,7 +25,7 @@ class DatabaseService {
   // getting user data
   Future gettingUserData(String email) async {
     QuerySnapshot snapshot =
-    await userCollection.where("email", isEqualTo: email).get();
+        await userCollection.where("email", isEqualTo: email).get();
     return snapshot;
   }
 
@@ -55,14 +56,14 @@ class DatabaseService {
 
       DocumentReference userDocumentReference = userCollection.doc(uid);
       await userDocumentReference.update({
-        "groups": FieldValue.arrayUnion(["${groupDocumentReference.id}_$groupName"])
+        "groups":
+            FieldValue.arrayUnion(["${groupDocumentReference.id}_$groupName"])
       });
       print('Group added to user groups.');
     } catch (e) {
       print('Error creating group: $e');
     }
   }
-
 
   // getting the chats
   getChats(String groupId) async {
@@ -104,7 +105,8 @@ class DatabaseService {
   }
 
   // toggling the group join/exit
-  Future toggleGroupJoin(String groupId, String userName, String groupName) async {
+  Future toggleGroupJoin(
+      String groupId, String userName, String groupName) async {
     // doc reference
     DocumentReference userDocumentReference = userCollection.doc(uid);
     DocumentReference groupDocumentReference = groupCollection.doc(groupId);
@@ -132,7 +134,9 @@ class DatabaseService {
 
   // send message
   sendMessage(String groupId, Map<String, dynamic> chatMessageData) async {
+    print("working ............");
     groupCollection.doc(groupId).collection("messages").add(chatMessageData);
+    print("working ............");
     groupCollection.doc(groupId).update({
       "recentMessage": chatMessageData['message'],
       "recentMessageSender": chatMessageData['sender'],

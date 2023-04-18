@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   const Text(
-                    "Groupie",
+                    "HiveChat",
                     style: TextStyle(
                         fontSize: 40, fontWeight: FontWeight.bold),
                   ),
@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                         )),
                     onChanged: (val) {
                       setState(() {
-                        email = val;
+                        email = val.trim();
                       });
                     },
 
