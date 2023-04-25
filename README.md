@@ -13,8 +13,8 @@ HiveChat is a group chat mobile application that allows users to communicate wit
 * AES encryption and decryption algorithm to secure messages.
 
 ## Technologies Used
-Flutter
-Firebase
+* Flutter
+* Firebase
 
 # License
 This project is licensed under the MIT License. See the LICENSE file for details.
